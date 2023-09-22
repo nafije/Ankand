@@ -50,7 +50,7 @@ namespace Ankand.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create([Bind("Titulli,Description,ImageURL,CreatedOn")]Produkti produkti)
+        public IActionResult Create([Bind("Name,Description,ImageURL,StartDate,EndDate")]Produkti produkti)
         {
             if(ModelState.IsValid)
             {
@@ -58,36 +58,12 @@ namespace Ankand.Controllers
             }
             else
             {
+                produkti.BiderId = 3;
                 _service.Add(produkti);
                 return RedirectToAction(nameof(Index));
             }
         }
-        //Get: Poste/Edit
-        public IActionResult Edit(int id)
-        {
-            var postDetails = _service.GetById(id);
-            if (postDetails == null)
-            {
-                return View("NotFound");
-            }
-            else
-            {
-                return View(postDetails);
-            }
-        }
-        [HttpPost]
-        public IActionResult Edit(int id,[ Bind("ID,Titulli,Description,ImageURL,CreatedOn")] Produkti produkti)
-        {
-            if (ModelState.IsValid)
-            {
-                return View(produkti);
-            }
-            else
-            {
-                _service.Update(id, produkti);
-                return RedirectToAction(nameof(Index));
-            }
-        }
+       
         //Get: Poste/Details/AddComent
         //public IActionResult AddComet()
         //{
@@ -104,6 +80,8 @@ namespace Ankand.Controllers
             {
                 //Add CommentedOn
                 oferta.CreatedOn = DateTime.Now;
+                oferta.BiderId = 3;
+                oferta.FullName = "Nafije";
                 _service.AddComents(oferta);
                 return RedirectToAction(nameof(Index));
             }
@@ -128,6 +106,13 @@ namespace Ankand.Controllers
             _service.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-       
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed1(int id)
+        {
+            _service.DeleteOferts(id);
+            return RedirectToAction("Index", "Produkti");
+        }
+
     }
 }

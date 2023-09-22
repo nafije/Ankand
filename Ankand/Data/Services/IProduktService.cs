@@ -13,5 +13,6 @@ namespace Ankand.Data.Services
         void Delete(int id);
         IEnumerable<Oferta> GetAll_oferts(int id);
         void AddComents(Oferta oferta);
+        void DeleteOferts(int id);
     }
 }

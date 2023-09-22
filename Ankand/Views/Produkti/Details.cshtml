@@ -31,36 +31,50 @@
                             <p class="card-text"><b>Created On: </b>@Model.StartDate.ToString("dd MMM yy")</p>
                             <p class="card-text">
                                 <hr />
-                                <b>Coments: </b>
-                                @if (Model.ApplicationUser != null)
-                                {
+                                <b>Bids: </b>
+                               @* @if (Model.ApplicationUser != null)
+                                {*@
                                     <div class="row">
-                                        @foreach (var coment in Model.Name)
+                                    @if(Model.Oferta !=null)
+                                    {
+                                        @foreach (var coment in Model.Oferta)
                                         {
-@*                                            <div class="column text-left">
-                                                <p class="card-text">@coment.Com <a class="btn btn-danger" asp-action="Delete" asp-route-id="@coment.ID"> <i class="bi bi-trash"></i> </a></p>
-                                                <p></p>
-                                            </div>*@
+                                            <div class="column text-left">
+                                            <p class="card-text"> <b>@coment.FullName</b><b>:</b> @coment.OfertaPrice.ToString("c")   </p>
+                                                <p>@coment.CreatedOn
+                                                <form method="post" asp-action="DeleteConfirmed1">
+                                                        <input type="hidden" name="id" value="@coment.ID" />
+                                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                                    </form>
+                                                </p>
+                                            </div>
                                         }
+                                    }
                                     </div>
-                                }
+                               @* }*@
                             </p>
                         </dic>
                     </div>
                 </form>
                         <div class="card-footer">
                             <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-action="Index"> Back</a>
-                                <form method="post" asp-controller="Poste" asp-action="AddComet">
-                                    <div class="form-group">
-                                        <label for="Comment">Comment:</label>
-                                    <input type="text" class="form-control" id="Comment" name="Comment" />
-                                    </div>
-                                    <div class="form-group">
-                                    <input type="hidden" name="PostID" value="@Model.ID" />
-                                    </div>
-                                <button type ="submit" class="btn btn-outline-success float-right">Add Coment</button>
-                                </form>
+                        <form method="post" asp-action="AddComet">
+                            <div class="form-group">
+                                <label for="OfertaPrice">Bids:</label>
+                                <input type="text" class="form-control" id="OfertaPrice" name="OfertaPrice" />
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="ProduktID" value="@Model.ID" />
+                            </div>
+                            <button type="submit" class="btn btn-outline-success float-right">Add Bid</button>
+                            <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                Back to List
+                            </a>
+                            @*  <a class="btn btn-success text-white"
+                            asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="Model.ID">
+                            <i class="bi bi-cart-plus"></i> Add to Cart (Price Model.Price.ToString("c"))
+                            </a>*@
+                        </form>
                             </p>
                         </div>
                 

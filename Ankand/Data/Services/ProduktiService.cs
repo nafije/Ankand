@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Ankand.Data.Services
 {
-    public class ProduktiService : IProduktService,IOfertService
+    public class ProduktiService : IProduktService
     {
         private readonly AppDbContext _context;
         public ProduktiService(AppDbContext context)
@@ -22,8 +22,15 @@ namespace Ankand.Data.Services
 
         public void Delete(int id)
         {
-            var result = _context.Poste.FirstOrDefault(p => p.ID == id);
-            _context.Poste.Remove(result);
+            var result = _context.Oferta.Where(c => c.ProduktID == id).ToList();
+            _context.Oferta.RemoveRange(result); 
+
+            var result1 = _context.Poste.FirstOrDefault(p => p.ID == id);
+            if (result1 != null)
+            {
+                _context.Poste.Remove(result1);
+            }
+
             _context.SaveChanges();
         }
 
@@ -72,8 +79,8 @@ namespace Ankand.Data.Services
 
         public void DeleteOferts(int id)
         {
-            var result = _context.Poste.FirstOrDefault(n => n.ID == id);
-            _context.Poste.Remove(result);
+            var result = _context.Oferta.FirstOrDefault(n => n.ID == id);
+            _context.Oferta.Remove(result);
             _context.SaveChanges();
         }
     }

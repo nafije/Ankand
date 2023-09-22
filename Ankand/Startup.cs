@@ -49,7 +49,6 @@ namespace e_Book
             services.AddScoped<AppDbContext>();
             //Services configuration
             services.AddScoped<IProduktService, ProduktiService>();
-            services.AddScoped<IOfertService, OfertService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();
             services.AddSession();
