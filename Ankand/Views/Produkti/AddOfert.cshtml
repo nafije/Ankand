@@ -1,0 +1,29 @@
+﻿    @model Oferta
+
+
+@{
+    ViewData["Tittle"] = "Add a ofert";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <form asp-action="AddOfert">
+                    <div class="form-group">
+                        <label asp-fpr="OfertaPrice" class="control-label">Comment</label>
+                        <input asp-for="OfertaPrice" class="form-control" />
+                        <span asp-validation-for="OfertaPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary float-right" asp-action="Index"> Back</a>
+                            <input type="submit" value="AddComent" class="btn btn-outline-success float-right" />
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model Produkti
+
+
+@{
+    ViewData["Tittle"] = "Details of product";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Details for @Model.Name</h1>
+        </p>
+        <div class="card mb-12">
+            <div class="row g-0">
+               @* <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Titulli
+                            </h5>
+                        </p>
+                    </div>
+                </div>*@
+                <form asp-action="Details">
+                    <div class="form-group text-center">
+                        <img src="@Model.ImageURL" width=200 alt="@Model.Name">
+                    </div>
+                    <div class="col-md-8">
+                        <dic class="card-body">
+                            <p class="card-text"><b>Title: </b>@Model.Name</p>
+                            <p class="card-text"><b>Description: </b>@Model.Description</p>
+                            <p class="card-text"><b>Created On: </b>@Model.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text">
+                                <hr />
+                                <b>Coments: </b>
+                                @if (Model.ApplicationUser != null)
+                                {
+                                    <div class="row">
+                                        @foreach (var coment in Model.Name)
+                                        {
+@*                                            <div class="column text-left">
+                                                <p class="card-text">@coment.Com <a class="btn btn-danger" asp-action="Delete" asp-route-id="@coment.ID"> <i class="bi bi-trash"></i> </a></p>
+                                                <p></p>
+                                            </div>*@
+                                        }
+                                    </div>
+                                }
+                            </p>
+                        </dic>
+                    </div>
+                </form>
+                        <div class="card-footer">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Index"> Back</a>
+                                <form method="post" asp-controller="Poste" asp-action="AddComet">
+                                    <div class="form-group">
+                                        <label for="Comment">Comment:</label>
+                                    <input type="text" class="form-control" id="Comment" name="Comment" />
+                                    </div>
+                                    <div class="form-group">
+                                    <input type="hidden" name="PostID" value="@Model.ID" />
+                                    </div>
+                                <button type ="submit" class="btn btn-outline-success float-right">Add Coment</button>
+                                </form>
+                            </p>
+                        </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
