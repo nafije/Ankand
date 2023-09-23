@@ -10,8 +10,8 @@ namespace Ankand.Models
         public string Email { get; set; }
 
         public int UserId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        //[ForeignKey(nameof(UserId))]
+        //public ApplicationUser User { get; set; }
         public List<OrderItem> OrderItems { get; set; }
 
     }

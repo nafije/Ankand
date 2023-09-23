@@ -27,8 +27,8 @@ namespace Ankand.Models
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
         public int BiderId { get; set; }
-        [ForeignKey("BiderId")]
-        public ApplicationUser ApplicationUser { get; set; }
+        //[ForeignKey("BiderId")]
+        //public ApplicationUser ApplicationUser { get; set; }
         public List<Oferta> Oferta { get; set; }
     }
 }

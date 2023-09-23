@@ -1,5 +1,5 @@
-﻿@model Produkti
-
+﻿@using Ankand.Data.ViewModels;
+@model Ankand.Data.ViewModels.PostDetailsViewModel;
 
 @{
     ViewData["Tittle"] = "Details of product";
@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Details for @Model.Name</h1>
+            <h1>Details for @Model.Produkti.Name</h1>
         </p>
         <div class="card mb-12">
             <div class="row g-0">
@@ -22,30 +22,33 @@
                 </div>*@
                 <form asp-action="Details">
                     <div class="form-group text-center">
-                        <img src="@Model.ImageURL" width=200 alt="@Model.Name">
+                        <img src="@Model.Produkti.ImageURL" width=200 alt="@Model.Produkti.Name">
                     </div>
                     <div class="col-md-8">
                         <dic class="card-body">
-                            <p class="card-text"><b>Title: </b>@Model.Name</p>
-                            <p class="card-text"><b>Description: </b>@Model.Description</p>
-                            <p class="card-text"><b>Created On: </b>@Model.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text"><b>Title: </b>@Model.Produkti.Name</p>
+                            <p class="card-text"><b>Description: </b>@Model.Produkti.Description</p>
+                            <p class="card-text"><b>Created On: </b>@Model.Produkti.StartDate.ToString("dd MMM yy")</p>
                             <p class="card-text">
                                 <hr />
                                 <b>Bids: </b>
                                @* @if (Model.ApplicationUser != null)
                                 {*@
                                     <div class="row">
-                                    @if(Model.Oferta !=null)
+                                    @if (Model.Produkti.Oferta != null)
                                     {
-                                        @foreach (var coment in Model.Oferta)
+                                        @foreach (var coment in Model.Produkti.Oferta)
                                         {
                                             <div class="column text-left">
                                             <p class="card-text"> <b>@coment.FullName</b><b>:</b> @coment.OfertaPrice.ToString("c")   </p>
                                                 <p>@coment.CreatedOn
-                                                <form method="post" asp-action="DeleteConfirmed1">
-                                                        <input type="hidden" name="id" value="@coment.ID" />
-                                                        <button class="btn btn-danger" type="submit">Delete</button>
-                                                    </form>
+                                                     @if (!Model.IsCurrentUserCreator)
+                                                    {
+                                                        <form method="post" asp-action="DeleteConfirmed1">
+                                                            <input type="hidden" name="id" value="@coment.ID" />
+                                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                                        </form>
+                                                    }
                                                 </p>
                                             </div>
                                         }
@@ -56,28 +59,30 @@
                         </dic>
                     </div>
                 </form>
-                        <div class="card-footer">
-                            <p class="card-text">
-                        <form method="post" asp-action="AddComet">
-                            <div class="form-group">
-                                <label for="OfertaPrice">Bids:</label>
-                                <input type="text" class="form-control" id="OfertaPrice" name="OfertaPrice" />
-                            </div>
-                            <div class="form-group">
-                                <input type="hidden" name="ProduktID" value="@Model.ID" />
-                            </div>
-                            <button type="submit" class="btn btn-outline-success float-right">Add Bid</button>
-                            <a class="btn btn-outline-primary float-right" asp-action="Index">
-                                Back to List
-                            </a>
-                            @*  <a class="btn btn-success text-white"
+                @if (!Model.IsCurrentUserCreator)
+                {
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <form method="post" asp-action="AddComet">
+                                <div class="form-group">
+                                    <label for="OfertaPrice">Bids:</label>
+                                    <input type="text" class="form-control" id="OfertaPrice" name="OfertaPrice" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="ProduktID" value="@Model.Produkti.ID" />
+                                </div>
+                                <button type="submit" class="btn btn-outline-success float-right">Add Bid</button>
+                                <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                    Back to List
+                                </a>
+                                @*  <a class="btn btn-success text-white"
                             asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="Model.ID">
                             <i class="bi bi-cart-plus"></i> Add to Cart (Price Model.Price.ToString("c"))
                             </a>*@
-                        </form>
-                            </p>
-                        </div>
-                
+                            </form>
+                        </p>
+                    </div>
+                }
             </div>
         </div>
     </div>

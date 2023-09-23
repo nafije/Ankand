@@ -6,6 +6,7 @@ namespace Ankand.Data.Services
 {
     public interface IProduktService
     {
+
         IEnumerable<Produkti> GetAll();
         Produkti GetById(int id);
         void Add(Produkti Produkti);

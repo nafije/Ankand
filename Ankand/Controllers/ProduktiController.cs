@@ -1,7 +1,10 @@
 ﻿using Ankand.Data;
 using Ankand.Data.Services;
+using Ankand.Data.ViewModels;
 //using eblog.Migrations;
 using Ankand.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 
@@ -11,37 +14,58 @@ namespace Ankand.Controllers
     {
         private readonly IProduktService _service;
 
-       
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProduktiController(IProduktService service)
+        public ProduktiController(IProduktService service,UserManager<ApplicationUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
+
        
         public IActionResult Index()
         {
             var postdata = _service.GetAll();
-            return View(postdata);
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+            // Create a list to store boolean values indicating if the current user is the creator for each product.
+            var isCurrentUserCreatorList = new List<bool>();
+
+            // Iterate through each product and check if the current user is the creator.
+            foreach (var product in postdata)
+            {
+                bool isCurrentUserCreator = product.BiderId == currentUser.Id;
+                isCurrentUserCreatorList.Add(isCurrentUserCreator);
+            }
+
+            // Pass the products and the list of boolean values to the view.
+            var viewModel = new PostViewModel
+            {
+                Products = postdata,
+                IsCurrentUserCreatorList = isCurrentUserCreatorList
+            };
+
+            return View(viewModel);
         }
         //Get:Poste/Details.id
         public IActionResult Details(int id)
         {
             var postDetails = _service.GetById(id);
             var commentdata = _service.GetAll_oferts(id);
+            var currentUser = _userManager.GetUserAsync(User).Result;
+            bool isCurrentUserCreator = postDetails.BiderId == currentUser.Id;
             if (postDetails == null)
             {
                 return View("NotFound");
             }
             else
             {
-               
-                //var model = new Poste
-                //{
-                //    //Post  = postDetails,
-                //    Coments = (List<Coments>)commentdata
-                //};
-
-                return View(postDetails);
+                var viewModel = new PostDetailsViewModel
+                {
+                    Produkti = postDetails,
+                    IsCurrentUserCreator = isCurrentUserCreator
+                };
+                return View(viewModel);
             }
         }
         //Get: Poste/Add
@@ -58,8 +82,13 @@ namespace Ankand.Controllers
             }
             else
             {
-                produkti.BiderId = 3;
-                _service.Add(produkti);
+                var user = _userManager.GetUserAsync(User).Result;
+                produkti.BiderId = user.Id;
+                using (var context = new AppDbContext()) // Replace YourDbContext with your actual DbContext
+                {
+                    context.Attach(produkti);
+                    context.SaveChanges();
+                }
                 return RedirectToAction(nameof(Index));
             }
         }

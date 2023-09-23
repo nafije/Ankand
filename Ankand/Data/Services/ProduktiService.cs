@@ -1,12 +1,14 @@
 ﻿using Ankand.Data;
 using Ankand.Models;
 using Ankand.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq.Expressions;
 
 namespace Ankand.Data.Services
 {
+    [Authorize]
     public class ProduktiService : IProduktService
     {
         private readonly AppDbContext _context;

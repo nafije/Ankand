@@ -1,4 +1,5 @@
 ﻿using Ankand.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace Ankand.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext()
         {

@@ -13,12 +13,39 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
-               
-                    <a  asp-controller="Produkti"  asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add Product</a>
-               
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
+                    <div style="position: fixed;">
+                        <a asp-controller="Produkti" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add Product</a>
+                    </div>
+                }
+                else
+                {
+                    <a class="navbar-brand" href="/Account/Login">Ankand</a>
+                }
+
+                <partial name="_Identity.cshtml" />
             </div>
         </nav>
+@*
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
+                }
+                <div style="position:fixed;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Produkti" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add Product</a>
+                    }
+                </div>
+
+                <partial name="_Identity.cshtml" />
+            </div>
+            
+        </nav>*@
     </header>
     <div class="container">
         <main role="main" class="pb-3">

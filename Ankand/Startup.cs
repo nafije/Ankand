@@ -49,7 +49,9 @@ namespace e_Book
             services.AddScoped<AppDbContext>();
             //Services configuration
             services.AddScoped<IProduktService, ProduktiService>();
+            //services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddMemoryCache();
             services.AddSession();
             services.AddAuthentication();
@@ -69,7 +71,30 @@ namespace e_Book
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            //app.Use(async (context, next) =>
+            //{
+            //    if (context.User.Identity.IsAuthenticated)
+            //    {
+            //        context.Response.Redirect("/Produkti");
+            //    }
+            //    else
+            //    {
+            //        context.Response.Redirect("/Account/Login");
+            //    }
+            //    await next();
+            //});
+            
+            //app.Use(async (context, next) =>
+            //{
+            //    if (!context.Request.Path.HasValue || context.Request.Path == "/")
+            //    {
+            //        context.Response.Redirect("/Account/Login");
+            //        return;
+            //    }
+
+            //    await next();
+            //});
+                app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
