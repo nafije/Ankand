@@ -4,6 +4,7 @@ using Ankand.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq.Expressions;
@@ -11,7 +12,7 @@ using System.Linq.Expressions;
 namespace Ankand.Data.Services
 {
     [Authorize]
-    public class ProduktiService : SessionEndMiddleware
+    public class ProduktiService : IProduktService
     {
         private readonly AppDbContext _context;
         public ProduktiService(AppDbContext context)
@@ -40,6 +41,7 @@ namespace Ankand.Data.Services
        
         public IEnumerable<Produkti> GetAll()
         {
+
             DateTime currentDate = DateTime.Now;
 
             var result = _context.Poste
@@ -57,7 +59,14 @@ namespace Ankand.Data.Services
         }
         public Produkti GetById(int id)
         {
-            var result = _context.Poste.FirstOrDefault(n => n.ID == id);
+            var result = _context.Poste.Include(p => p.Oferta).FirstOrDefault(n => n.ID == id);
+
+            if (result != null)
+            {
+                // Order the Ofertas by OfferPrice in descending order
+                result.Oferta = result.Oferta.OrderByDescending(o => o.OfertaPrice).ToList();
+            }
+            //var result = _context.Poste.FirstOrDefault(n => n.ID == id);
             return result;
         }
         public IEnumerable<Oferta> GetAll_oferts(int id)
@@ -93,6 +102,12 @@ namespace Ankand.Data.Services
             return _context.Poste
     .Where(b => b.BiderId != id && _context.Oferta.Count(of => of.ProduktID == b.ID) > 0)
     .ToList();
+        }
+
+        public Oferta GetOfertById(int id)
+        {
+            var result = _context.Oferta.Include(p => p.Produkti).FirstOrDefault(n => n.ID == id);
+            return result;
         }
     }
 }

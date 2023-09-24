@@ -6,7 +6,7 @@ namespace Ankand.Models
     {
         [Key]
         public int Id { get; set; }
-        public Produkti Produkti { get; set; }
+        public Oferta Produkti { get; set; }
         public int Amount { get; set; }
         public string ShopingCartId { get; set; }
     }

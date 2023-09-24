@@ -22,9 +22,9 @@ using Ankand.Models;
 using Ankand.Data;
 using Ankand.Data.Services;
 using Ankand.Data.Services;
+using Ankand.Data.Cart;
 
-
-namespace e_Book
+namespace Ankand
 {
 
     public class Startup
@@ -49,10 +49,12 @@ namespace e_Book
             services.AddScoped<DbContextOptions<AppDbContext>>();
             services.AddScoped<AppDbContext>();
             //Services configuration
-            services.AddScoped<SessionEndMiddleware, ProduktiService>();
-            //services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<SessionEndMiddleware, ProduktiService>();
+            services.AddScoped<IProduktService, ProduktiService>();
+            services.AddScoped<IOrdersServices, OrdersService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddScoped(sc => ShopingCart.GetShopingCart(sc));
             services.AddMemoryCache();
             services.AddAuthentication();
             services.AddControllersWithViews();

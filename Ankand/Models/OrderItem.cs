@@ -11,7 +11,7 @@ namespace Ankand.Models
         public double Price { get; set; }
         public int ProduktID { get; set; }
         [ForeignKey("ProduktID")]
-        public Produkti Produkti { get; set; }
+        public Oferta Oferta { get; set; }
 
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]

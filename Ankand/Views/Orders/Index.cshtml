@@ -1,0 +1,89 @@
+﻿@using Ankand.Data.ViewModels;
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Mvc.Routing
+
+@model ShopingCartVM
+
+@{
+    ViewData["Title"] = "Shopping cart summary";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h2>Your shopping cart sumary </h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShopingCart.ShopinCartItems)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Produkti.ProduktID</td>
+                        <td class="align-middle">@item.Produkti.OfertaPrice.ToString("c")</td>
+                        <td class="align-middle">@((item.Amount * item.Produkti.OfertaPrice).ToString("c"))</td>
+                     
+
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>@Model.ShopingCartTotal.ToString("c")</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="text-center">
+            <div class="btn-gruop">
+                <div id="paypal-btn"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+    <script>
+        let _total = @Html.Raw(Model.ShopingCartTotal);
+        paypal.Button.render({
+            //configure enviroment
+            env: 'sandbox',
+            client:{
+                sandbox: 'AXyDxJgy5BZQHTReP_ZImuUObD4h5L5zpccP95_sA-n_BPosRsE2wro1fqcKbh9U_f8KbCJqX9cSb62W'
+            },
+            //costumizzze button
+            locale: 'en_US',
+            style: {
+                size: 'small',
+                color: 'gold',
+                shape: 'pill'
+            },
+            commit: true,
+            //payment
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+            onAuthorize: function (data, actions) {
+                return window.location.href = 'https://localhost:44327/Orders/CompleteOrder';
+            }
+
+        }, '#paypal-btn')
+    </script>
+}

@@ -13,13 +13,13 @@ namespace Ankand.Controllers
 {
     public class ProduktiController : Controller
     {
-        private readonly SessionEndMiddleware _service;
+        private readonly IProduktService _service;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly AppDbContext _context;
 
-        public ProduktiController(AppDbContext context,SessionEndMiddleware service,UserManager<ApplicationUser> userManager)
+        public ProduktiController(AppDbContext context, IProduktService service,UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _service = service;
