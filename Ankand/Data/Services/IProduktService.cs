@@ -4,10 +4,11 @@ using System.Linq.Expressions;
 
 namespace Ankand.Data.Services
 {
-    public interface IProduktService
+    public interface SessionEndMiddleware
     {
 
         IEnumerable<Produkti> GetAll();
+        IEnumerable<Produkti> GetAllBids(string id);
         Produkti GetById(int id);
         void Add(Produkti Produkti);
         Produkti Update(int id, Produkti newprodukt);

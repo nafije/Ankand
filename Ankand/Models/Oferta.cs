@@ -19,7 +19,7 @@ namespace Ankand.Models
         [ForeignKey("ProduktID")]
         public Produkti Produkti { get; set; }
 
-        public int BiderId { get; set; }
+        public string BiderId { get; set; }
         //[ForeignKey("BiderId")]
         //public ApplicationUser ApplicationUser { get; set; }
 

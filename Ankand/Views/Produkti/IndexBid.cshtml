@@ -1,14 +1,12 @@
-﻿@using Ankand.Data.ViewModels
-@model PostViewModel
+﻿@model IEnumerable<Produkti>
+
 
 @{
-    ViewData["Title"] = "Ankand";
+    ViewData["Tittle"] = "Your bids";
 }
-
 <div class="row">
-    @foreach (var index in Enumerable.Range(0, Model.Products.Count()))
+    @foreach (var item in Model)
     {
-        var item = Model.Products.ElementAt(index);
         <div class="col-md-4 col-xs-6 border-primary mb-3">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
@@ -17,19 +15,15 @@
                             <p class="card-text">
                                 <h5 class="card-title">
                                     @item.Name
-                                    @if (Model.IsCurrentUserCreatorList[index])
-                                    {
-                                        <a class="text-white float-right" asp-action="Delete" asp-route-id="@item.ID"><i class="bi bi-trash"></i></a>
-                                    }
                                 </h5>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="@item.ImageURL" width="100%" alt="@item.Name">
+                        <img src="@item.ImageURL" width=100% alt="@item.Name">
                     </div>
                     <div class="col-md-6">
-                        <div class="card-body">
+                        <dic class="card-body">
                             <p class="card-text"><b>Name: </b>@item.Name</p>
                             <p class="card-text"><b>Description: </b>@item.Description</p>
                             <p class="card-text"><b>Created On: </b>@item.StartDate.ToString("dd MMM yy")</p>
@@ -42,18 +36,21 @@
                                 if (remainingTime.TotalSeconds > 0)
                                 {
                                     <p><b>Remaining Time: </b> @remainingTime.ToString(@"hh\:mm\:ss")</p>
+
+
+
+
                                 }
                                 else
                                 {
                                     <p><b>Auction has ended</b></p>
-                                }
-                            }*@
-                        </div>
+                                }*@
+                        </dic>
                     </div>
                     <div class="col-md-12">
                         <div class="card-footer">
                             <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.ID"><i class="bi bi-eye-fill"></i> Details</a>
+                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.ID"><i class="bi bi-eye-fill"></i>Details</a>
                             </p>
                         </div>
                     </div>
@@ -61,4 +58,5 @@
             </div>
         </div>
     }
+
 </div>

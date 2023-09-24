@@ -2,6 +2,8 @@
 using Ankand.Models;
 using Ankand.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq.Expressions;
@@ -9,7 +11,7 @@ using System.Linq.Expressions;
 namespace Ankand.Data.Services
 {
     [Authorize]
-    public class ProduktiService : IProduktService
+    public class ProduktiService : SessionEndMiddleware
     {
         private readonly AppDbContext _context;
         public ProduktiService(AppDbContext context)
@@ -35,7 +37,7 @@ namespace Ankand.Data.Services
 
             _context.SaveChanges();
         }
-
+       
         public IEnumerable<Produkti> GetAll()
         {
             DateTime currentDate = DateTime.Now;
@@ -84,6 +86,13 @@ namespace Ankand.Data.Services
             var result = _context.Oferta.FirstOrDefault(n => n.ID == id);
             _context.Oferta.Remove(result);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Produkti> GetAllBids(string id)
+        {
+            return _context.Poste
+    .Where(b => b.BiderId != id && _context.Oferta.Count(of => of.ProduktID == b.ID) > 0)
+    .ToList();
         }
     }
 }

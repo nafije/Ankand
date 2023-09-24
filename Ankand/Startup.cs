@@ -23,6 +23,7 @@ using Ankand.Data;
 using Ankand.Data.Services;
 using Ankand.Data.Services;
 
+
 namespace e_Book
 {
 
@@ -48,12 +49,11 @@ namespace e_Book
             services.AddScoped<DbContextOptions<AppDbContext>>();
             services.AddScoped<AppDbContext>();
             //Services configuration
-            services.AddScoped<IProduktService, ProduktiService>();
+            services.AddScoped<SessionEndMiddleware, ProduktiService>();
             //services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddMemoryCache();
-            services.AddSession();
             services.AddAuthentication();
             services.AddControllersWithViews();
 
@@ -100,6 +100,7 @@ namespace e_Book
             app.UseRouting();
             app.UseSession();
 
+           // app.UseMiddleware<SessionEndMiddleware>();
             //Authentication & Authorization
             app.UseAuthentication();
             app.UseAuthorization();

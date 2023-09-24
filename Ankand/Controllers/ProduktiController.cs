@@ -6,23 +6,34 @@ using Ankand.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Ankand.Controllers
 {
     public class ProduktiController : Controller
     {
-        private readonly IProduktService _service;
+        private readonly SessionEndMiddleware _service;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProduktiController(IProduktService service,UserManager<ApplicationUser> userManager)
+        private readonly AppDbContext _context;
+
+        public ProduktiController(AppDbContext context,SessionEndMiddleware service,UserManager<ApplicationUser> userManager)
         {
+            _context = context;
             _service = service;
             _userManager = userManager;
         }
 
-       
+        [Authorize] // Ensure that the user is authenticated
+        public IActionResult IndexBid()
+        {
+            // Get the current logged-in user
+            var currentUser =  _userManager.GetUserAsync(User).Result;
+            var postdata = _service.GetAllBids(currentUser.Email);
+            return View(postdata);
+        }
         public IActionResult Index()
         {
             var postdata = _service.GetAll();
@@ -34,7 +45,7 @@ namespace Ankand.Controllers
             // Iterate through each product and check if the current user is the creator.
             foreach (var product in postdata)
             {
-                bool isCurrentUserCreator = product.BiderId == currentUser.Id;
+                bool isCurrentUserCreator = product.BiderId == currentUser.Email;
                 isCurrentUserCreatorList.Add(isCurrentUserCreator);
             }
 
@@ -53,7 +64,7 @@ namespace Ankand.Controllers
             var postDetails = _service.GetById(id);
             var commentdata = _service.GetAll_oferts(id);
             var currentUser = _userManager.GetUserAsync(User).Result;
-            bool isCurrentUserCreator = postDetails.BiderId == currentUser.Id;
+            bool isCurrentUserCreator = postDetails.BiderId == currentUser.Email;
             if (postDetails == null)
             {
                 return View("NotFound");
@@ -83,7 +94,7 @@ namespace Ankand.Controllers
             else
             {
                 var user = _userManager.GetUserAsync(User).Result;
-                produkti.BiderId = user.Id;
+                produkti.BiderId = user.Email;
                 using (var context = new AppDbContext()) // Replace YourDbContext with your actual DbContext
                 {
                     context.Attach(produkti);
@@ -109,8 +120,9 @@ namespace Ankand.Controllers
             {
                 //Add CommentedOn
                 oferta.CreatedOn = DateTime.Now;
-                oferta.BiderId = 3;
-                oferta.FullName = "Nafije";
+                var user = _userManager.GetUserAsync(User).Result;
+                oferta.BiderId = user.Email;
+                oferta.FullName = user.FullNAme;
                 _service.AddComents(oferta);
                 return RedirectToAction(nameof(Index));
             }
