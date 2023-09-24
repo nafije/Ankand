@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-6">
                         <dic class="card-body">
-                            <p class="card-text"><b>Name: </b>@item.Name</p>
+                            <a class="navbar-link" asp-action="Details" asp-route-id="@item.ID" style="text-decoration: underline; color: dodgerblue;"><i class=""></i><b>Name: </b>@item.Name</a>
                             <p class="card-text"><b>Description: </b>@item.Description</p>
                             <p class="card-text"><b>Price: </b>@item.Price.ToString("c")</p>
                             <p class="card-text"><b>Created On: </b>@item.StartDate.ToString("dd MMM yy")</p>

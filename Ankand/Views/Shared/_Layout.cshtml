@@ -12,36 +12,30 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
-                    <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="IndexBid">My Bids</a>
-                <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="WalletBalance">Your Wallet</a>
-                    <a asp-controller="Produkti" asp-action="Create" ><i class="bi bi-plus-circle"></i>Add Product</a>
-
-                }
-                    <partial name="_Identity.cshtml" />
-        
-        </nav>
-@*
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
-                }
-                <div style="position:fixed;">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a asp-controller="Produkti" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add Product</a>
-                    }
-                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <style>
+                                .navbar-link {
 
-                <partial name="_Identity.cshtml" />
+                                    color: dodgerblue;
+                                    text-decoration: underline;
+                                    margin-right: 10px; 
+                                }
+                            </style>
+
+                            <a class="navbar-link" asp-controller="Produkti" asp-action="Index"><i class=""></i>Book auctions</a>
+                            <a class="navbar-link" asp-controller="Produkti" asp-action="IndexBid"><i class=""></i>My Bids</a>
+                            <a class="navbar-link" asp-controller="Produkti" asp-action="WalletBalance"><i class=""></i>My Wallet</a>
+                            <a class="navbar-link" asp-controller="Produkti" asp-action="Create"><i class="bi bi-plus-circle"></i>New auctions</a>
+                        }
+                    </ul>
+                    <partial name="_Identity.cshtml" />
+                </div>
             </div>
-            
-        </nav>*@
+        </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

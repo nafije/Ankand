@@ -8,6 +8,12 @@
         <p>
             <h4>Sign up for new account</h4>
         </p>
+        @if (TempData.ContainsKey("ErrorMessage"))
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
         @if(TempData["Error"] !=null)
         {
             <div class="col-md-12 alert alert-danger">

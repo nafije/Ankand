@@ -27,7 +27,7 @@ namespace Ankand.Data.Services
 
         public void Delete(int id)
         {
-            var result = _context.Oferta.Where(c => c.ProduktID == id).ToList();
+              var result = _context.Oferta.Where(c => c.ProduktID == id).ToList();
             _context.Oferta.RemoveRange(result); 
 
             var result1 = _context.Poste.FirstOrDefault(p => p.ID == id);

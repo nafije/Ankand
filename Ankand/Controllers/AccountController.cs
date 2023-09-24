@@ -44,11 +44,11 @@ namespace e_Book.Controllers
                         return RedirectToAction("Index", "Produkti");
                     }
                 }
-                TempData["Error"] = "Wrong credentials. Please, try again!";
+                TempData["ErrorMessage"]  = "Wrong credentials. Please, try again!";
                 return View(loginVM);
             }
 
-            TempData["Error"] = "Wrong credentials. Please, try again!";
+            TempData["ErrorMessage"]  = "Wrong credentials. Please, try again!";
             return View(loginVM);
         }
 
@@ -56,12 +56,27 @@ namespace e_Book.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
+            if(registerVM.FullName==null || registerVM.EmailAddres==null || registerVM.Password==null || registerVM.ConfirmPassword == null)
+            {
+                TempData["ErrorMessage"] = "AAll fields are required. The password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+                return View(registerVM);
+            }
+            if (registerVM.Password.Length < 6) 
+            {
+                TempData["ErrorMessage"] = "Password must be at least 6 characters long.";
+                return View(registerVM);
+            }
             if (!ModelState.IsValid) return View(registerVM);
             var user = await _userManager.FindByEmailAsync(registerVM.EmailAddres);
             if (user != null)
             {
-                // TempData["Error"] = "This email addres is alredy in use.";
-                return View(TempData["This email addres is alredy in use."]);
+                TempData["ErrorMessage"]= "This email addres is alredy in use.";
+                return View(registerVM);
+            }
+            if(registerVM.Password != registerVM.ConfirmPassword)
+            {
+                TempData["ErrorMessage"] = "Passwords do not match.";
+                return View(registerVM);
             }
             var newUser = new ApplicationUser()
             {
