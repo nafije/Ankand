@@ -16,10 +16,7 @@ namespace Ankand.Data.Services
         {
 
             var orders = await _context.Order.Include(n=>n.OrderItems).ThenInclude(n=>n.Oferta).Include(n=>n.UserId).ToListAsync();
-            //if (userRole!="Admin")
-            //{
-                orders=orders.Where(n=>n.UserId==userId).ToList();
-            //}
+            orders=orders.Where(n=>n.UserId==userId).ToList();
             return orders;
         }
 

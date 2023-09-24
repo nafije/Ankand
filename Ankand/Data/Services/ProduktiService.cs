@@ -63,10 +63,8 @@ namespace Ankand.Data.Services
 
             if (result != null)
             {
-                // Order the Ofertas by OfferPrice in descending order
                 result.Oferta = result.Oferta.OrderByDescending(o => o.OfertaPrice).ToList();
             }
-            //var result = _context.Poste.FirstOrDefault(n => n.ID == id);
             return result;
         }
         public IEnumerable<Oferta> GetAll_oferts(int id)
@@ -74,9 +72,6 @@ namespace Ankand.Data.Services
             var result = _context.Oferta.Where(m => m.ProduktID == id).ToList();
             return result;
         }
-
-        
-
         public Produkti Update(int id, Produkti newprodukt)
         {
             _context.Update(newprodukt);
@@ -89,7 +84,6 @@ namespace Ankand.Data.Services
             _context.Oferta.Add(oferta);
             _context.SaveChanges();
         }
-
         public void DeleteOferts(int id)
         {
             var result = _context.Oferta.FirstOrDefault(n => n.ID == id);
@@ -108,6 +102,21 @@ namespace Ankand.Data.Services
         {
             var result = _context.Oferta.Include(p => p.Produkti).FirstOrDefault(n => n.ID == id);
             return result;
+        }
+
+        public void AddWallet(Wallet wallet)
+        {
+            _context.Wallet.Add(wallet);
+            _context.SaveChanges();
+        }
+
+        public decimal GetTotalBidsByBidder(string id)
+        {
+            decimal totalBids = (decimal)_context.Oferta
+        .Where(b => b.BiderId == id)
+        .Sum(b => b.OfertaPrice);
+
+            return totalBids;
         }
     }
 }

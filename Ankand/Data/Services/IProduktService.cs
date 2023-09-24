@@ -17,5 +17,7 @@ namespace Ankand.Data.Services
         IEnumerable<Oferta> GetAll_oferts(int id);
         void AddComents(Oferta oferta);
         void DeleteOferts(int id);
-    }
+        void AddWallet(Wallet wallet);
+        decimal GetTotalBidsByBidder(string id);
+    };
 }

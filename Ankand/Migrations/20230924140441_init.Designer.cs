@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ankand.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230923155459_init")]
+    [Migration("20230924140441_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -102,8 +102,9 @@ namespace Ankand.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("BiderId")
-                        .HasColumnType("int");
+                    b.Property<string>("BiderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -137,10 +138,13 @@ namespace Ankand.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -182,8 +186,9 @@ namespace Ankand.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("BiderId")
-                        .HasColumnType("int");
+                    b.Property<string>("BiderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -234,6 +239,32 @@ namespace Ankand.Migrations
                     b.HasIndex("ProduktiID");
 
                     b.ToTable("ShopinCartItem");
+                });
+
+            modelBuilder.Entity("Ankand.Models.Wallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BidderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OfertId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wallet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -380,6 +411,17 @@ namespace Ankand.Migrations
                     b.Navigation("Produkti");
                 });
 
+            modelBuilder.Entity("Ankand.Models.Order", b =>
+                {
+                    b.HasOne("Ankand.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Ankand.Models.OrderItem", b =>
                 {
                     b.HasOne("Ankand.Models.Order", "Order")
@@ -388,20 +430,20 @@ namespace Ankand.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ankand.Models.Produkti", "Produkti")
+                    b.HasOne("Ankand.Models.Oferta", "Oferta")
                         .WithMany()
                         .HasForeignKey("ProduktID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("Oferta");
 
-                    b.Navigation("Produkti");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Ankand.Models.ShopinCartItem", b =>
                 {
-                    b.HasOne("Ankand.Models.Produkti", "Produkti")
+                    b.HasOne("Ankand.Models.Oferta", "Produkti")
                         .WithMany()
                         .HasForeignKey("ProduktiID")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -11,15 +11,6 @@
         </p>
         <div class="card mb-12">
             <div class="row g-0">
-               @* <div class="col-md-12">
-                    <div class="card-header text-white bg-info">
-                        <p class="card-text">
-                            <h5 class="card-title">
-                                @Model.Titulli
-                            </h5>
-                        </p>
-                    </div>
-                </div>*@
                 <form asp-action="Details">
                     <div class="form-group text-center">
                         <img src="@Model.Produkti.ImageURL" width=200 alt="@Model.Produkti.Name">
@@ -32,8 +23,6 @@
                             <p class="card-text">
                                 <hr />
                                 <b>Bids: </b>
-                               @* @if (Model.ApplicationUser != null)
-                                {*@
                                     <div class="row">
                                     @if (Model.Produkti.Oferta != null)
                                     {
@@ -63,7 +52,6 @@
                                         }
                                     }
                                     </div>
-                               @* }*@
                             </p>
                         </dic>
                     </div>
@@ -84,10 +72,6 @@
                                 <a class="btn btn-outline-primary float-right" asp-action="Index">
                                     Back to List
                                 </a>
-                                @*  <a class="btn btn-success text-white"
-                            asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="Model.ID">
-                            <i class="bi bi-cart-plus"></i> Add to Cart (Price Model.Price.ToString("c"))
-                            </a>*@
                             </form>
                         </p>
                     </div>

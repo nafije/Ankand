@@ -26,10 +26,9 @@ namespace Ankand.Controllers
             _userManager = userManager;
         }
 
-        [Authorize] // Ensure that the user is authenticated
+        [Authorize] 
         public IActionResult IndexBid()
         {
-            // Get the current logged-in user
             var currentUser =  _userManager.GetUserAsync(User).Result;
             var postdata = _service.GetAllBids(currentUser.Email);
             return View(postdata);
@@ -39,17 +38,13 @@ namespace Ankand.Controllers
             var postdata = _service.GetAll();
             var currentUser = _userManager.GetUserAsync(User).Result;
 
-            // Create a list to store boolean values indicating if the current user is the creator for each product.
             var isCurrentUserCreatorList = new List<bool>();
 
-            // Iterate through each product and check if the current user is the creator.
             foreach (var product in postdata)
             {
                 bool isCurrentUserCreator = product.BiderId == currentUser.Email;
                 isCurrentUserCreatorList.Add(isCurrentUserCreator);
             }
-
-            // Pass the products and the list of boolean values to the view.
             var viewModel = new PostViewModel
             {
                 Products = postdata,
@@ -104,11 +99,6 @@ namespace Ankand.Controllers
             }
         }
        
-        //Get: Poste/Details/AddComent
-        //public IActionResult AddComet()
-        //{
-        //    return View();
-        //}
         [HttpPost]
         public IActionResult AddComet(Oferta oferta)
         {
@@ -124,9 +114,42 @@ namespace Ankand.Controllers
                 oferta.BiderId = user.Email;
                 oferta.FullName = user.FullNAme;
                 _service.AddComents(oferta);
-                return RedirectToAction(nameof(Index));
+
+                //marrim id e ofertes 
+                int offertid = oferta.ID;
+                return RedirectToAction(nameof(AddWalletBudget), new { id = offertid });
             }
         }
+        //Add wallet 
+        public IActionResult AddWalletBudget(int id)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            decimal totalBids = GetTotalBidsByBidder1(user.Email);
+            decimal bilancimbetur = 1000 - totalBids;
+            if (bilancimbetur < 0)
+            {
+                DeleteConfirmed1(id);
+                return  View("Bilanci_Negativ");
+            }
+            var wallet = new Wallet
+            {
+                BidderId = user.Email,
+                Amount = 1000 ,
+                OfertId=id,
+                Balance= bilancimbetur
+
+            };
+            _service.AddWallet(wallet);
+            return RedirectToAction(nameof(Index));
+        }
+        
+        private decimal GetTotalBidsByBidder1(string email)
+        {
+            decimal totalBids = _service.GetTotalBidsByBidder(email);
+
+            return totalBids;
+        }
+
         //Delte
         public async Task<IActionResult> Delete(int id)
         {
@@ -152,7 +175,7 @@ namespace Ankand.Controllers
         public IActionResult DeleteConfirmed1(int id)
         {
             _service.DeleteOferts(id);
-            return RedirectToAction("Index", "Produkti");
+            return RedirectToAction(nameof(AddWalletBudget), new { id = id });
         }
 
     }

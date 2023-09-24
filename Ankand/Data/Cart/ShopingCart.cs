@@ -27,9 +27,6 @@ namespace Ankand.Data.Cart
 
         public void AddItemToCart(BooksModel produkti)
         {
-            
-            //var books = new BooksModel();
-
             var shoppingCartItem = _context.ShopinCartItem.FirstOrDefault(n => n.Produkti.ID== produkti.ID && n.ShopingCartId == ShopinCartID);
             if (shoppingCartItem == null)
             {
