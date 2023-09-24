@@ -19,7 +19,9 @@
                         <dic class="card-body">
                             <p class="card-text"><b>Title: </b>@Model.Produkti.Name</p>
                             <p class="card-text"><b>Description: </b>@Model.Produkti.Description</p>
+                            <p class="card-text"><b>Price: </b>@Model.Produkti.Price.ToString("c")</p>
                             <p class="card-text"><b>Created On: </b>@Model.Produkti.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text"><b>End Date: </b>@Model.Produkti.EndDate.ToString("dd MMM yy")</p>
                             <p class="card-text">
                                 <hr />
                                 <b>Bids: </b>

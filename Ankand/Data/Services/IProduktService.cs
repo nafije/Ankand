@@ -19,5 +19,6 @@ namespace Ankand.Data.Services
         void DeleteOferts(int id);
         void AddWallet(Wallet wallet);
         decimal GetTotalBidsByBidder(string id);
+        decimal GetWallet(string id);
     };
 }

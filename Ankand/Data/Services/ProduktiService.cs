@@ -118,5 +118,24 @@ namespace Ankand.Data.Services
 
             return totalBids;
         }
+
+        public decimal GetWallet(string id)
+        {
+            var lastWalletRecord = _context.Wallet
+            .Where(w => w.BidderId == id) 
+            .OrderByDescending(w => w.Id)
+            .FirstOrDefault();
+            //marrim shumen totale
+            if (lastWalletRecord == null)
+            {
+                decimal lastAmount = 1000;
+                return lastAmount;
+            }
+            else
+            {
+                decimal lastAmount = lastWalletRecord.Balance;
+                return lastAmount;
+            }
+        }
     }
 }

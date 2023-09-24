@@ -13,20 +13,16 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         
-               @* @if (User.Identity.IsAuthenticated)
-                {*@
+                @if (User.Identity.IsAuthenticated)
+                {
                     <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="Index">Ankand</a>
                     <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="IndexBid">My Bids</a>
-                    <a asp-controller="Produkti" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add Product</a>
-                    
-               @* }
-                else
-                {*@
-                   @* <a class="navbar-brand" href="/Account/Login">Ankand</a>*@
-               @* }*@
+                <a class="navbar-brand" asp-area="" asp-controller="Produkti" asp-action="WalletBalance">Your Wallet</a>
+                    <a asp-controller="Produkti" asp-action="Create" ><i class="bi bi-plus-circle"></i>Add Product</a>
 
-                <partial name="_Identity.cshtml" />
-          
+                }
+                    <partial name="_Identity.cshtml" />
+        
         </nav>
 @*
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">

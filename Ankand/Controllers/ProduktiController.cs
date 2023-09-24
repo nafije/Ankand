@@ -80,7 +80,7 @@ namespace Ankand.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create([Bind("Name,Description,ImageURL,StartDate,EndDate")]Produkti produkti)
+        public IActionResult Create([Bind("Name,Description,Price,ImageURL,StartDate,EndDate")]Produkti produkti)
         {
             if(ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace Ankand.Controllers
             {
                 var user = _userManager.GetUserAsync(User).Result;
                 produkti.BiderId = user.Email;
-                using (var context = new AppDbContext()) // Replace YourDbContext with your actual DbContext
+                using (var context = new AppDbContext()) 
                 {
                     context.Attach(produkti);
                     context.SaveChanges();
@@ -176,6 +176,13 @@ namespace Ankand.Controllers
         {
             _service.DeleteOferts(id);
             return RedirectToAction(nameof(AddWalletBudget), new { id = id });
+        }
+        public IActionResult WalletBalance()
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            decimal walletBalance =_service.GetWallet(user.Email);
+            ViewBag.WalletBalance = walletBalance;
+            return View();
         }
 
     }
