@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ankand.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230924140441_init")]
-    partial class init
+    [Migration("20230924182410_final")]
+    partial class final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
