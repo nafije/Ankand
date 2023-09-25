@@ -45,7 +45,7 @@ namespace Ankand
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddDbContext<AppDbContext>(options => {
                 //options.UseSqlServer(Configuration.GetConnectionString("Data Source=nafije-pc\\sqlexpress;Initial Catalog=Ankand-db;Integrated Security=True;Pooling=False; trustServerCertificate = true"));
-                options.UseSqlServer(Configuration.GetConnectionString("Server=tcp:auctions-app-server.database.windows.net,1433;Initial Catalog=Ankand-db;Persist Security Info=False;User ID=auctions-admin;Password=Zxasqw1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+                options.UseSqlServer(Configuration.GetConnectionString("Server=tcp:ankand-app-server.database.windows.net,1433;Initial Catalog=ankand-db;Persist Security Info=False;User ID=ankand-admin;Password=Zxasqw1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             }, ServiceLifetime.Scoped);
             services.AddScoped<DbContextOptions<AppDbContext>>();
             services.AddScoped<AppDbContext>();
@@ -111,7 +111,7 @@ namespace Ankand
             {
                 endpoints.MapControllerRoute(
                  name: "default",
-                 pattern: "{controller=Books}/{action=Index}/{id?}");
+                 pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
 

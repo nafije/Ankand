@@ -20,7 +20,7 @@ namespace Ankand.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=tcp:auctions-app-server.database.windows.net,1433;Initial Catalog=Ankand-db;Persist Security Info=False;User ID=auctions-admin;Password=Zxasqw1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=tcp:ankand-app-server.database.windows.net,1433;Initial Catalog=ankand-db;Persist Security Info=False;User ID=ankand-admin;Password=Zxasqw1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         }
        
